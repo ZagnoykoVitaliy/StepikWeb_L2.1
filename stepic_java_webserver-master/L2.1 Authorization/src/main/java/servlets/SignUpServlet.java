@@ -29,53 +29,12 @@ public class SignUpServlet extends HttpServlet {
                        HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        String email = request.getParameter("email");
 
         if (accountService.getUserByLogin(login) != null) {
-            response.getWriter().println(login + " reg");
         } else {
-            response.getWriter().println(login + " unreg");
-            accountService.addNewUser(new UserProfile(login, password, email));
-        }
-
-
-//        if (login == null || password == null) {
-//            response.setContentType("text/html;charset=utf-8");
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            return;
-//        }
-//
-//        UserProfile profile = accountService.getUserByLogin(login);
-//        if (profile == null || !profile.getPass().equals(password)) {
-//            response.setContentType("text/html;charset=utf-8");
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            return;
-//        }
-//
-//        accountService.addNewUser(new UserProfile("login", "password","email"));
-//        accountService.addSession(request.getSession().getId(), profile);
-//        System.out.println(accountService);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(profile.getLogin());
-//        response.setContentType("text/html;charset=utf-8");
-        response.getWriter().println("Registered: " + login + " " + password + " " + email);
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
-
-    //sign out
-    public void doDelete(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        String sessionId = request.getSession().getId();
-        UserProfile profile = accountService.getUserBySessionId(sessionId);
-        if (profile == null) {
-            response.setContentType("text/html;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        } else {
-            accountService.deleteSession(sessionId);
-            response.setContentType("text/html;charset=utf-8");
-            response.getWriter().println("Goodbye!");
-            response.setStatus(HttpServletResponse.SC_OK);
+            accountService.addNewUser(new UserProfile(login, password));
         }
 
     }
+
 }
